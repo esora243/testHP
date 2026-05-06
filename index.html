@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMIC - National Medstudent Information Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #F97316;
+            --primary-dark: #EA580C;
+            --primary-light: #FFF7ED;
+            --text-main: #1E293B;
+            --text-muted: #64748b;
+            --bg-main: #F8FAFC;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding-top: 120px;
+            padding-bottom: 100px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-main) 100%);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-image-wrap {
+            margin-top: 3rem;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .hero-image-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+        }
+
+        /* Section Titles */
+        section { padding: 6rem 0; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Activities Section */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .card-img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+            line-height: 1.4;
+        }
+
+        .card p { color: var(--text-muted); }
+
+        /* Future Plan */
+        .plan-section { background-color: var(--white); }
+        
+        .plan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .plan-item {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .plan-number {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .plan-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .plan-content h4 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .plan-content p { color: var(--text-muted); }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+        
+        .btn-link:hover { gap: 0.8rem; color: var(--primary-dark); }
+
+        /* BtoB Services */
+        .btob-section { background-color: var(--primary-light); }
+        
+        .btob-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 4rem 3rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btob-lead {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 3rem;
+            line-height: 1.5;
+        }
+
+        .btob-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .btob-box {
+            background: var(--bg-main);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+        }
+
+        .btob-box h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .btob-box ul {
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .btob-box ul li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .btob-box ul li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 10px;
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* Company Table */
+        .company-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .company-table th, .company-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .company-table th {
+            background: var(--bg-main);
+            width: 30%;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .company-table tr:last-child th,
+        .company-table tr:last-child td { border-bottom: none; }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-row { display: flex; gap: 1.5rem; }
+        .form-row .form-group { flex: 1; }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .required { color: #ef4444; margin-left: 4px; }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--bg-main);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            background: var(--white);
+        }
+
+        textarea { height: 160px; resize: vertical; }
+
+        .btn-submit {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover { background: var(--primary-dark); }
+
+        /* Action Buttons */
+        .actions-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--white);
+            transition: var(--transition);
+            min-width: 280px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn-app { background: var(--text-main); }
+        .btn-app:hover { background: #0f172a; }
+        .btn-line { background: #06C755; }
+        .btn-line:hover { background: #05b34c; }
+
+        /* Footer */
+        footer {
+            background: var(--text-main);
+            color: var(--text-muted);
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a:hover { color: var(--white); }
+        .copyright { font-size: 0.9rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                flex-direction: column;
+                gap: 0;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow-md);
+                display: none; /* JSでトグル */
+            }
+            .nav-links.active { display: flex; }
+            .nav-links a {
+                padding: 1.2rem 2rem;
+                border-bottom: 1px solid var(--bg-main);
+            }
+            .menu-toggle { display: block; }
+            
+            .hero { padding-top: 100px; }
+            .plan-item { flex-direction: column; gap: 1rem; }
+            .form-row { flex-direction: column; gap: 0; }
+            .company-table th, .company-table td { display: block; width: 100%; }
+            .company-table th { background: var(--bg-main); }
+            
+            .btob-card { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">NMIC</div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#home">HOME</a>
+                    <a href="#about">ABOUT US</a>
+                    <a href="#activities">ACTIVITIES</a>
+                    <a href="#plan">PLAN</a>
+                    <a href="#contact">CONTACT</a>
+                </div>
+                <div class="menu-toggle" id="mobileMenuBtn">
+                    <i data-lucide="menu"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>National Medstudent<br>Information Community</h1>
+                <p>全国の医学生を繋ぎ、地域と医療の未来を創るプラットフォーム</p>
+                <div class="hero-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=80" alt="医学生のネットワーク">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Activities</h2>
+                <p class="section-subtitle">本団体は、以下の２つの軸を中心に活動を行っています。</p>
+            </div>
+            
+            <div class="activities-grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" alt="ネットワーク構築" class="card-img">
+                    <div class="card-body">
+                        <h3>全国医学生の情報基盤となる<br>ネットワークの構築</h3>
+                        <p>日本全国の医学生の学生生活に寄り添い、皆さんの「挑戦したい！」という想いを実現へと繋げるためのネットワークを構築します。</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=800&q=80" alt="地域医療" class="card-img">
+                    <div class="card-body">
+                        <h3>医療と地域を繋ぐ<br>取り組み</h3>
+                        <p>少子高齢化が進む日本において、存在がより重要視されている地域医療。全国各地の現状や課題を共有し、将来の医療の担い手として関わるきっかけを創ります。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Plan Section -->
+    <section id="plan" class="plan-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Future Plan</h2>
+                <p class="section-subtitle">私たちがこれから実現していく未来のビジョン</p>
+            </div>
+            
+            <div class="plan-list">
+                <div class="plan-item">
+                    <div class="plan-number">1</div>
+                    <div class="plan-content">
+                        <h3>地域医療の課題共有プラットフォーム</h3>
+                        <p>課題解決の第一歩は、課題を知ること。全国各地の医学生が、それぞれの地域の地域医療の現状や課題を共有し、医学生の問題意識を高めます。</p>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-number">2</div>
+                    <div class="plan-content">
+                        <h3>イベント開催</h3>
+                        <h4>オンラインイベント</h4>
+                        <p>全国各地の地域医療の現状や課題について学ぶ勉強会を開催します。</p>
+                        <h4>対面イベント</h4>
+                        <p>地域医療の課題をテーマに、医学生同士で解決策を考えるワークショップを開催します。大学や地域を越えた医学生同士の交流も行います。</p>
+                    </div>
+                </div>
+
+                <div class="plan-item">
+                    <div class="plan-number">3</div>
+                    <div class="plan-content">
+                        <h3>国内留学プログラム</h3>
+                        <p>長期休暇期間を活用し、全国各地の医療機関や地域を訪問する国内留学プログラムを実施します。実際の医療現場を体験することで、地域医療への理解を深める機会を提供します。</p>
+                        <a href="#" class="btn-link">Details <i data-lucide="arrow-right" style="width: 16px;"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services for Companies Section -->
+    <section id="services" class="btob-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">企業・医療機関向けサービス</h2>
+            </div>
+            
+            <div class="btob-card">
+                <div class="btob-lead">
+                    日本全国の医学生 約56,000人を対象とした<br>情報共有プラットフォーム
+                </div>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">
+                    はぐめいどでは、企業・医療機関・教育機関の皆様に向けて、<br>
+                    医学生コミュニティを活用したマーケティング支援を行っています。
+                </p>
+
+                <div class="btob-grid">
+                    <div class="btob-box">
+                        <h4><i data-lucide="target"></i> 対象となる商材・領域</h4>
+                        <ul>
+                            <li>医学書／医療教育サービス</li>
+                            <li>医療系アプリ</li>
+                            <li>医療機器メーカー</li>
+                            <li>医学生向けアルバイト</li>
+                            <li>医学生向けイベント</li>
+                            <li>研修医採用を行う医療機関</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="btob-box">
+                        <h4><i data-lucide="lightbulb"></i> 目的例</h4>
+                        <ul>
+                            <li>サービスの認知獲得</li>
+                            <li>アプリの利用促進</li>
+                            <li>イベント・セミナーへの集客</li>
+                            <li>学生インサイト（アンケート）収集</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: var(--primary-light); padding: 2rem; border-radius: var(--radius-md); text-align: center;">
+                    <h4 style="color: var(--primary-dark); margin-bottom: 1rem;">提供可能なプロモーション</h4>
+                    <p style="color: var(--text-muted); line-height: 1.8;">
+                        公式LINEでの情報配信（学年・地域セグメント対応） / 医学生向けサービスの紹介記事掲載<br>
+                        イベント・セミナーの告知 / アプリ・サービスの利用促進 / アンケート調査
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Profile Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">会社概要</h2>
+            </div>
+            
+            <table class="company-table">
+                <tbody>
+                    <tr>
+                        <th>会社名</th>
+                        <td>株式会社はぐめいど</td>
+                    </tr>
+                    <tr>
+                        <th>代表者名</th>
+                        <td>（代表者名を記載）</td>
+                    </tr>
+                    <tr>
+                        <th>設立年月日</th>
+                        <td>（設立年月日を記載）</td>
+                    </tr>
+                    <tr>
+                        <th>資本金</th>
+                        <td>（事業規模の目安・資本金を記載）</td>
+                    </tr>
+                    <tr>
+                        <th>所在地</th>
+                        <td>〒431-3122<br>静岡県浜松市中央区有玉南町１８６７－１</td>
+                    </tr>
+                    <tr>
+                        <th>事業内容</th>
+                        <td>
+                            ・医学生向け情報プラットフォームの運営<br>
+                            ・医学生コミュニティを活用したマーケティング支援<br>
+                            ・医療・教育分野における広告・プロモーション事業<br>
+                            ・医学生向けキャリア・教育支援事業
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background-color: var(--white);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">広告掲載・連携のご相談</h2>
+                <p class="section-subtitle">広告掲載、プロモーション、共同企画などをご希望の企業様は<br>以下よりお問い合わせください。</p>
+            </div>
+            
+            <div class="contact-form">
+                <form action="#" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lastName">姓 <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" placeholder="山田" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">名 <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" placeholder="太郎" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="example@company.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">タイトル</label>
+                        <input type="text" id="title" name="title" placeholder="ご用件のタイトル">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="details">詳細</label>
+                        <textarea id="details" name="details" placeholder="お問い合わせ内容をご記入ください"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">送信する</button>
+                </form>
+            </div>
+
+            <div class="actions-wrapper">
+                <a href="#" class="btn btn-app"><i data-lucide="smartphone"></i> アプリはこちらから</a>
+                <a href="#" class="btn btn-line"><i data-lucide="message-circle"></i> 公式LINEはこちらから</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">プライバシーポリシー: 個人情報の取り扱い</a>
+            </div>
+            <p class="copyright">&copy; NMIC / 株式会社はぐめいど All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Icons and Mobile Menu -->
+    <script>
+        // アイコンの初期化
+        lucide.createIcons();
+
+        // モバイルメニューの開閉処理
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // リンクをクリックしたらメニューを閉じる
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
