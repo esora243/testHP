@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* シマーグラデーション(ローディング画面用) */
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(168,85,247,0.25) 40%,
+    rgba(236,72,153,0.25) 60%,
+    rgba(255,255,255,0.04) 100%
+  );
+  background-size: 200% 100%;
+}
